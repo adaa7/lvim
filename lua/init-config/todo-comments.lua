@@ -1,4 +1,9 @@
-{
+local status, todo_comments = pcall(require, "todo_comments")
+if not status then
+  vim.notify("没有找到 todo-comments")
+  return
+end 
+todo_comments.setup({
   signs = true, -- show icons in the signs column
   sign_priority = 8, -- sign priority
   -- keywords recognized as todo comments
@@ -61,4 +66,5 @@
     pattern = [[\b(KEYWORDS):]], -- ripgrep regex
     -- pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
   },
-}
+})
+

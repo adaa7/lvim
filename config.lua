@@ -7,7 +7,7 @@ a global executable or a path to
 an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
--- general
+-- TODO general
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
 lvim.colorscheme = "gruvbox-material"
@@ -21,7 +21,7 @@ vim.opt.foldexpr = "" -- set to "nvim_treesitter#foldexpr()" for treesitter base
 vim.opt.clipboard = "unnamedplus" -- 许neovim访问系统剪贴板 vim.opt.fileencoding = "utf-8" -- the encoding written to a file基于树的折叠设置为 vim.opt.foldmethod = "manual" -- 于树的折叠设置为
 vim.opt.colorcolumn = "99999" --暂时修复缩进行
 vim.opt.mouse = "a" --许在neovim中使用鼠标
-vim.opt.showmode = false -- 我们不再需要看到——INSERT——这样的东西
+vim.opt.showmode = true -- 我们不再需要看到——INSERT——这样的东西
 vim.opt.smartindent = true -- 再次使缩进更智能
 vim.opt.splitbelow = true --强制所有水平分割到当前窗口以下
 vim.opt.splitright = true -- 强制所有垂直分割到当前窗口的右侧
@@ -36,16 +36,11 @@ vim.opt.sidescrolloff = 8
 lvim.builtin.treesitter.rainbow.enable = true --启用彩虹括号
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
--- add your own keymapping
+-- TODO: add your own keymapping
 
 --Split window
--- lvim.keys.normal_mode["wv"] = ":split<Return><C-w>w"
-
--- lvim.keys.normal_mode["ww"] = ":vsplit<Return><C-w>w"
-
-
--- FIX dsaf
--- FIX Hello
+lvim.keys.normal_mode["wv"] = ":split<Return><C-w>w"
+lvim.keys.normal_mode["ww"] = ":vsplit<Return><C-w>w"
 -- 保存
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 vim.keymap.set("i","<C-s>","<ESC>:w<cr>")
@@ -53,14 +48,17 @@ vim.keymap.set("i","<C-s>","<ESC>:w<cr>")
 lvim.keys.normal_mode["L"] = "$"
 lvim.keys.normal_mode["H"] = "^"
 -- [PERF]向下9行
-lvim.keys.normal_mode["<C-j>"] = "9j"
+lvim.keys.normal_mode["<C-d>"] = "9j"
 -- 向上9行
-lvim.keys.normal_mode["<C-k>"] = "9k"
+lvim.keys.normal_mode["<C-u>"] = "9k"
 -- 强制退出
 lvim.keys.normal_mode["Q"] = ":q<cr>"
 -- 全选
 lvim.keys.normal_mode["<C-a>"] = "gg<S-v>G"
 vim.keymap.set("i","jk","<ESC>")
+vim.keymap.set("i","<C-v>","<ESC>v")
+-- 打开 TODO
+lvim.keys.normal_mode["<C-p>"] = ":TodoTelescope<cr>"
 
 
 
@@ -69,18 +67,24 @@ lvim.keys.visual_mode["H"] = "^"
 lvim.keys.visual_mode["L"] = "$"
 lvim.keys.visual_mode["J"] = ":m '>+2<CR>gv=gv"
 lvim.keys.visual_mode["K"] = ":m '<-1<CR>gv=gv"
+lvim.keys.visual_mode["<"] = "<gv"
+lvim.keys.visual_mode[">"] = ">gv"
 
 -- "-------------------------------------------------------------------------------
 -- " translation 翻译
 -- "-------------------------------------------------------------------------------
 -- " Echo translation in the cmdline
-vim.keymap.set("n","<Leader>t","<Plug>Translate")
-vim.keymap.set("v","<Leader>t","<Plug>Translatev")
+vim.keymap.set("n","tt","<Plug>Translate")
+vim.keymap.set("v","tt","<Plug>Translatev")
 -- " Display translation in a window
-vim.keymap.set("n","<Leader>w","<Plug>TranslateW")
-vim.keymap.set("v","<Leader>w","<Plug>TranslateWV")
+-- vim.keymap.set("n","<Leader>w","<Plug>TranslateW")
+-- vim.keymap.set("v","<Leader>w","<Plug>TranslateWV")
 
+-- tokyonight.nvim 跳转
 
+vim.keymap.set("n", "wh", ":BufferLineCyclePrev<CR>")
+vim.keymap.set("n", "wl", ":BufferLineCycleNext<CR>")
+vim.keymap.set("n", "wc", ":BufferKill<CR>")
 
 -- dap
 lvim.keys.normal_mode["<F12>"] = ":Telescope dap configurations<cr>"
@@ -145,7 +149,6 @@ lvim.builtin.which_key.mappings.d = {
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
-
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
@@ -185,9 +188,7 @@ lvim.builtin.treesitter.highlight.enable = true
 -- lvim.lsp.installer.setup.ui.check_outdated_servers_on_open = false
 -- lvim.lsp.installer.setup.ui.border = "rounded"
 -- lvim.lsp.installer.setup.ui.keymaps = {
---     uninstall_server = "d",
---     toggle_server_expand = "o",
--- }
+--     uninstall_server = "d", toggle_server_expand = "o", }
 
 -- ---@usage disable automatic installation of servers
 -- lvim.lsp.installer.setup.automatic_installation = false
@@ -248,7 +249,9 @@ lvim.builtin.treesitter.highlight.enable = true
 --   },
 -- }
 
---open Plugins
+
+-- TODO:open Plugins
+
 -- Leap跳转插件
 require('init-config.nvim-leap')
 -- color
@@ -259,12 +262,17 @@ require('init-config.vim-translator')
 --require('init-config.nvim-tree')
 
 
-
 -- Additional Plugins
 lvim.plugins = {
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
+  },
+  {
+    "lewis6991/impatient.nvim" -- Speed up loading Lua modules   
+  },
+  {
+     "rcarriga/nvim-notify" -- notify
   },
   {
     "sainnhe/gruvbox-material" --主题
@@ -339,15 +347,6 @@ lvim.plugins = {
         end,
     },
   {
-    -- 突出显示并搜索待办事项评论
-  "folke/todo-comments.nvim",
-  requires = "nvim-lua/plenary.nvim",
-  event = "BufRead",
-  config = function()
-    require("todo-comments").setup()
-  end,
-},
-{
     -- 在光标下的单词下划线
   "itchyny/vim-cursorword",
     event = {"BufEnter", "BufNewFile"},
@@ -367,12 +366,52 @@ lvim.plugins = {
   event = "BufRead",
 },
 {
-    --实时编辑 html、css 和 javascript
+    --实时编辑 html、css 和 javascript 
   "turbio/bracey.vim",
   cmd = {"Bracey", "BracyStop", "BraceyReload", "BraceyEval"},
   run = "npm install --prefix server",
 },
+{
+    "ravenxrz/DAPInstall.nvim" -- help us install several debuggers
+  },
+{
+    "theHamsta/nvim-dap-virtual-text"
+  },
+  {
+  "folke/lsp-colors.nvim",
+  event = "BufRead",
+},
+{
+  "rktjmp/lush.nvim",
+},
+{
+  "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup({ "css", "scss", "html", "javascript" }, {
+          RGB = true, -- #RGB hex codes
+          RRGGBB = true, -- #RRGGBB hex codes
+          RRGGBBAA = true, -- #RRGGBBAA hex codes
+          rgb_fn = true, -- CSS rgb() and rgba() functions
+          hsl_fn = true, -- CSS hsl() and hsla() functions
+          css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+          css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+          })
+  end,
+},
+{
+  "folke/todo-comments.nvim",
+  event = "BufRead",
+  config = function()
+    require("todo-comments").setup()
+  end,
+},
 }
+--  dap config
+-- load non-standard json file
+-- require('dap.ext.vscode').json_decode = require 'json5'.parse
+-- require('dap.ext.vscode').load_launchjs()
+require("dap.dap-lldb")
+require("dap.dap-cppdbg")
 
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
