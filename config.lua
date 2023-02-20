@@ -262,7 +262,7 @@ require('init-config.vim-translator')
 --require('init-config.nvim-tree')
 
 
--- Additional Plugins
+-- TODO: Additional Plugins
 lvim.plugins = {
   {
     "folke/trouble.nvim",
