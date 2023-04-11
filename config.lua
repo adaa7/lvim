@@ -20,7 +20,7 @@ vim.opt.foldlevel = 99
 vim.opt.foldexpr = "" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
 vim.opt.clipboard = "unnamedplus" -- 许neovim访问系统剪贴板 vim.opt.fileencoding = "utf-8" -- the encoding written to a file基于树的折叠设置为 vim.opt.foldmethod = "manual" -- 于树的折叠设置为
 vim.opt.colorcolumn = "99999" --暂时修复缩进行
-vim.opt.mouse = "a" --许在neovim中使用鼠标
+vim.opt.mouse = "c" --许在neovim中使用鼠标
 vim.opt.showmode = true -- 我们不再需要看到——INSERT——这样的东西
 vim.opt.smartindent = true -- 再次使缩进更智能
 vim.opt.splitbelow = true --强制所有水平分割到当前窗口以下
@@ -397,6 +397,9 @@ lvim.plugins = {
           css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
           })
   end,
+},
+{
+  "https://gitcode.net/lxyoucan/nvim-jdtls.git"  
 },
 {
   "folke/todo-comments.nvim",
